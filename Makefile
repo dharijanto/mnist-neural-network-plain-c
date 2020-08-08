@@ -1,5 +1,5 @@
 all:
-	gcc -g mnist.c mnist_file.c train_neural_network.c -lm -o train_neural_network
+	gcc -g train.c mnist_file.c neural_network.c -lm -o train
 
 clean:
-	rm train_neural_network
+	rm train

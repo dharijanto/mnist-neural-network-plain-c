@@ -1,2 +1,3 @@
 /.vscode/
-/train_neural_network
+/train
+/predict

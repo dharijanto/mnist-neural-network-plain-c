@@ -8,7 +8,7 @@ very slow. Hence I'm trying out DL-based technique for MNIST. My plan is:
 - To see if CPU-based inference of this NN is quick enough to be used for an RTS game
 
 # Usage
-- `train_neural_network` this trains a shallow NN for MNIST and output it to ./output/network-ubyte
+- `train` this trains a shallow NN for MNIST and output it to ./output/network-ubyte
 
 ## Attribution
 This repo is a fork off Andrew Carter's [implementation of shallow neural network for MNIST](https://github.com/AndrewCarterUK/mnist-neural-network-plain-c.git)
