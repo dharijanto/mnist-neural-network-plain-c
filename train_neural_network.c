@@ -149,12 +149,12 @@ int neural_network_save_network(neural_network_t * network, const char * file_pa
         return 1;
     }
     if (fwrite(network, sizeof(neural_network_t), 1, file) == 0) {
-        fprintf(stderr, "Failed to write into the file %s: %s\n", file_path, file_path, strerror(errno));
+        fprintf(stderr, "Failed to write into the file %s: %s\n", file_path, strerror(errno));
         ret = 1;
     }
 
     if (fclose(file) != 0) {
-        fprintf(stderr, "Failed to flush and close file %s: %s\n", file_path, file_path, strerror(errno));
+        fprintf(stderr, "Failed to flush and close file %s: %s\n", file_path, strerror(errno));
         return errno;
     }
     return ret;

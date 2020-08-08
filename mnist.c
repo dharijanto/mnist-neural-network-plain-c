@@ -6,7 +6,7 @@
 #include "include/mnist_file.h"
 #include "include/neural_network.h"
 
-#define STEPS 100
+#define STEPS 1000
 #define BATCH_SIZE 100
 
 /**
