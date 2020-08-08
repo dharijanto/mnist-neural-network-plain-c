@@ -153,6 +153,7 @@ mnist_dataset_t * mnist_get_dataset(const char * image_path, const char * label_
     }
 
     dataset->images = get_images(image_path, &number_of_images);
+    dataset->images_origin = dataset->images;
 
     if (NULL == dataset->images) {
         mnist_free_dataset(dataset);
@@ -160,6 +161,7 @@ mnist_dataset_t * mnist_get_dataset(const char * image_path, const char * label_
     }
 
     dataset->labels = get_labels(label_path, &number_of_labels);
+    dataset->labels_origin = dataset->labels;
 
     if (NULL == dataset->labels) {
         mnist_free_dataset(dataset);
@@ -183,31 +185,45 @@ mnist_dataset_t * mnist_get_dataset(const char * image_path, const char * label_
  */
 void mnist_free_dataset(mnist_dataset_t * dataset)
 {
-    free(dataset->images);
-    free(dataset->labels);
+    free(dataset->images_origin);
+    free(dataset->labels_origin);
     free(dataset);
 }
 
 /**
  * Fills the batch dataset with a subset of the parent dataset.
  */
+//                                                                      100    0 - 599
 int mnist_batch(mnist_dataset_t * dataset, mnist_dataset_t * batch, int size, int number)
 {
     int start_offset;
-
+    //         min  (100 * 0) = 0
+    //         max  (100 * 599) = 59,900
     start_offset = size * number;
-
+    //    min 0      >= 60,000
+    //    max 59,000 >= 60,000
     if (start_offset >= dataset->size) {
         return 0;
     }
 
     batch->images = &dataset->images[start_offset];
     batch->labels = &dataset->labels[start_offset];
+    // 100
     batch->size = size;
 
+    // min 0         + 100         > 60,000
+    // max 59,900    + 100         > 60,000
     if (start_offset + batch->size > dataset->size) {
         batch->size = dataset->size - start_offset;
     }
+
+    /*
+    batch: {
+        images: &dataset->images[0 - 59,900],
+        labels: &dataset->labels[0 - 59,900],
+        size: 100
+    }
+    */
 
     return 1;
 }

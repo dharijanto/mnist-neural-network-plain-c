@@ -1,3 +1,5 @@
+#include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
@@ -120,6 +122,7 @@ float neural_network_training_step(mnist_dataset_t * dataset, neural_network_t *
     memset(&gradient, 0, sizeof(neural_network_gradient_t));
 
     // Calculate the gradient and the loss by looping through the training set
+    //                          i < 100
     for (i = 0, total_loss = 0; i < dataset->size; i++) {
         total_loss += neural_network_gradient_update(&dataset->images[i], network, &gradient, dataset->labels[i]);
     }
@@ -128,10 +131,31 @@ float neural_network_training_step(mnist_dataset_t * dataset, neural_network_t *
     for (i = 0; i < MNIST_LABELS; i++) {
         network->b[i] -= learning_rate * gradient.b_grad[i] / ((float) dataset->size);
 
-        for (j = 0; j < MNIST_IMAGE_SIZE + 1; j++) {
+        for (j = 0; j < MNIST_IMAGE_SIZE; j++) {
             network->W[i][j] -= learning_rate * gradient.W_grad[i][j] / ((float) dataset->size);
         }
     }
 
     return total_loss;
+}
+
+int neural_network_save_network(neural_network_t * network, const char * file_path)
+{
+    int ret = 0;
+    FILE * file;
+    file = fopen(file_path, "wb");
+    if (file == NULL){
+        fprintf(stderr, "Failed to open %s for writing: %s\n", file_path, strerror(errno));
+        return 1;
+    }
+    if (fwrite(network, sizeof(neural_network_t), 1, file) == 0) {
+        fprintf(stderr, "Failed to write into the file %s: %s\n", file_path, file_path, strerror(errno));
+        ret = 1;
+    }
+
+    if (fclose(file) != 0) {
+        fprintf(stderr, "Failed to flush and close file %s: %s\n", file_path, file_path, strerror(errno));
+        return errno;
+    }
+    return ret;
 }

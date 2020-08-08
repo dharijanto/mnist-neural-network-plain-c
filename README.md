@@ -1,3 +1,9 @@
+# README
+
+Modified version of basic MNIST shallow neural network implementation in C by [Andrew Carter](https://github.com/AndrewCarterUK/mnist-neural-network-plain-c.git).
+
+# README from original forked repo
+
 # MNIST Neural Network in C
 
 This source code seeks to replicate the [MNIST For ML Beginners](https://www.tensorflow.org/versions/r1.1/get_started/mnist/beginners) tutorial from the Tensorflow website using plain C code.

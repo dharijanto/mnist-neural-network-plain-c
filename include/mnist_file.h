@@ -27,7 +27,9 @@ typedef struct mnist_image_t_ {
 } __attribute__((packed)) mnist_image_t;
 
 typedef struct mnist_dataset_t_ {
+    mnist_image_t * images_origin;
     mnist_image_t * images;
+    uint8_t * labels_origin;
     uint8_t * labels;
     uint32_t size;
 } mnist_dataset_t;
