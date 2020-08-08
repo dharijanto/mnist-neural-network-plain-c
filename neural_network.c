@@ -146,11 +146,33 @@ int neural_network_save_network(neural_network_t * network, const char * file_pa
     file = fopen(file_path, "wb");
     if (file == NULL){
         fprintf(stderr, "Failed to open %s for writing: %s\n", file_path, strerror(errno));
-        return 1;
+        return errno;
     }
     if (fwrite(network, sizeof(neural_network_t), 1, file) == 0) {
         fprintf(stderr, "Failed to write into the file %s: %s\n", file_path, strerror(errno));
-        ret = 1;
+        ret = errno;
+    }
+
+    if (fclose(file) != 0) {
+        fprintf(stderr, "Failed to flush and close file %s: %s\n", file_path, strerror(errno));
+        return errno;
+    }
+    return ret;
+}
+
+int neural_network_load_network(neural_network_t * network, const char * file_path)
+{
+    int ret = 0;
+    FILE * file;
+    file = fopen(file_path, "rb");
+    if (file == NULL){
+        fprintf(stderr, "Failed to open %s for writing: %s\n", file_path, strerror(errno));
+        return errno;
+    }
+    
+    if (fread(network, sizeof(neural_network_t), 1, file) != 1) {
+        fprintf(stderr, "Failed to read %s: %s\n", file_path, strerror(errno));
+        ret = errno;
     }
 
     if (fclose(file) != 0) {

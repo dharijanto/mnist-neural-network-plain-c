@@ -6,7 +6,7 @@
 #include "include/mnist_file.h"
 #include "include/neural_network.h"
 
-#define STEPS 1000
+#define STEPS 100
 #define BATCH_SIZE 100
 
 /**
@@ -17,7 +17,7 @@ const char * train_labels_file = "data/train-labels-idx1-ubyte";
 const char * test_images_file = "data/t10k-images-idx3-ubyte";
 const char * test_labels_file = "data/t10k-labels-idx1-ubyte";
 
-const char * network_save_path = "output/network-ubyte";
+const char * network_file_path = "output/network-ubyte";
 
 /**
  * Calculate the accuracy of the predictions of a neural network on a dataset.
@@ -95,8 +95,8 @@ int main(int argc, char *argv[])
     }
 
     // Save weight into file
-    if (neural_network_save_network(&network, network_save_path) == 0) {
-        printf("Successfully saved trained network to: %s\n", network_save_path);
+    if (neural_network_save_network(&network, network_file_path) == 0) {
+        printf("Successfully saved trained network to: %s\n", network_file_path);
     }
 
 
